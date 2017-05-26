@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			body{
+				margin: 0;
+				background: #999999;
+			}
+			ul li dl ol dd{
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			.parameter-box{
+				margin: 20px auto;
+				width: 1210px;
+			    z-index: 110;
+			    font-size: 0;
+			    background-color: #fff;
+			    position: relative;
+			    /*display: none;*/
+			    border-radius: 2px;
+			    -webkit-border-radius: 2px;
+			}
+			.par-title{
+				position: relative;
+				margin: 30px;
+				font:14px/24px "微软雅黑";
+			}
+			.par-title span{
+				margin-right: 10px;
+			}
+			.par-title span:first-of-type{
+				font-size: 16px;
+			}
+			.par-addcompare{
+				position: absolute;
+				top: 0;
+				right: 0;
+				color: #E2421B;
+				border: 1px solid #E2421B;
+			}
+			.par-list{
+				font:14px/14px "微软雅黑";
+			}
+			.par-list li{
+				float: left;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="parameter-box">
+			<i class="close">×</i>
+			<div class="par-title">
+				<span class="par">配置参数</span>
+		        <span>●标配</span>
+		        <span>○选配</span>
+		        <span>-无</span>
+		        <a class="par-addcompare" id="param_trace">加入对比</a>
+			</div>
+			<div class="par-list">
+				<ul class="par-options">
+                    <li >外观参数</li>
+                    <li >发动机参数</li>
+                    <li >底盘参数</li>
+                    <li >性能参数</li>
+                    <li >电动机参数</li>                                                                                                                                                                                                                                                                                                                                    
+            			<li>更多参数</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+</html>

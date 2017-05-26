@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+		<form action="" method="post">
+			<select name="er" id ="er">
+				<option value="1">a</option>
+				<option value="2">b</option>
+				<option value="3">c</option>
+				<option value="4">d</option>
+			</select>
+		</form>
+		<script src="jquery-3.1.1.min.js"></script>
+		<script>
+			$("#er option").each(function(i,item){
+				console.log($(item))
+				if($(item).text()==="b"){
+					console.log($(item).val());
+					$("select").val($(item).val())
+				}
+			})
+             
+		</script>
+	</body>
+</html>

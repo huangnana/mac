@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<script type="text/javascript">
+		var dpr = 1 / window.devicePixelRatio;
+		document.write('<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale='+dpr+',minimum-scale='+dpr+',maximum-scale='+dpr+'" />')
+		/*设置rem*/
+		var dpr = 1 / window.devicePixelRatio;
+		document.write('<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale='+dpr+',minimum-scale='+dpr+',maximum-scale='+dpr+'" />')		//console.log(document.documentElement.clientWidth);
+		var fz = document.documentElement.clientWidth / 10;
+		document.getElementsByTagName('html')[0].style.fontSize = fz + 'px';
+	</script>
+	<style>
+		/*通用样式*/
+		body{
+			margin: 0;
+			width:100%;
+			overflow: hidden;
+		}
+		.ullist{
+			position: absolute;
+			width: 100%;
+			overflow: hidden;
+		}
+		.list-info{
+			position: relative;
+			width: 100%;
+		}
+		ul{
+			list-style: none;
+			margin: 0;
+			padding: 0;
+			width: 100%;
+		}
+		.list-info ul{
+			position: absolute;
+			left: 0;
+			top: 0;
+		}
+		li,.title{
+			padding-left: 2%;
+			border-bottom: 1px solid #BFC0C0;
+			font:24px/64px "微软雅黑";
+		}
+		.title span:nth-of-type(1){
+			margin-left: 6%;
+		}
+		.list-info ul{
+			left:100%;
+			top:104%;
+			transition: .3s;
+			background: #fff;
+		}
+		/*上传照片部分样式*/
+		.list-info .pric-list{
+			position: relative;
+			background: #fff;
+			height: 3.5rem;
+			border-bottom: 1px solid #BFC0C0;
+			padding-left: 12%;
+		}
+		.list-info .pric-list input{
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 1.875rem;
+			height: 1.25rem;
+			opacity: 0;
+    			overflow: hidden;
+    			z-index: 9;
+		}
+		.list-info .pric-list span{
+			position: relative;
+			margin-right: 10%;
+			margin-top: 4%;
+			float: left;
+			width: 1.875rem;
+			height: 1.25rem;
+    			overflow: hidden;
+    			background: url(inpu-bg.png) no-repeat;
+    			background-size: 100%;
+		}
+		.list-info .pric-list img{
+			position: absolute;
+			left: 0;
+			top: 0;
+			width: 1.875rem;
+			height: 1.25rem;
+		}
+	</style>
+	<body>
+		<div class="ullist">
+			<div class="list-info">
+				<div class="title">请添加车辆照片</div>
+				<div class="pric-list">
+					<span>
+						<input type="file" id="fileElem" multiple accept="image/*"  onchange="handleFiles(this)">
+						<div id="fileList" style="width:200px;height:200px;"></div>
+					</span>
+				</div>
+			</div>
+			<div id="region" class="list-info">
+				<div class="title">选择所在地<span></span><span></span><span></span></div>
+				<ul id="province" class="frist"></ul>
+				<ul id="city" class="second"></ul>
+				<ul id="county" class="third"></ul>		
+			</div>
+			<div class="list-info">
+				<div class="title">排放<span></span></div>
+					<ul class="frist">
+						<li>国五</li>
+						<li>国四</li>
+						<li>国三</li>
+						<li>国二</li>
+						<li>国一</li>
+					</ul>	
+			</div>
+			<div class="list-info">
+				<div class="title">颜色<span></span></div>
+					<ul class="frist">
+						<li>红</li>
+						<li>黄</li>
+						<li>蓝</li>
+						<li>绿</li>
+						<li>白</li>
+						<li>黑</li>
+					</ul>	
+			</div>
+		</div>
+		<script src="data.js"></script>
+		<script src="jquery-3.1.1.min.js" type="text/javascript"></script>
+		<script src="iscroll-probe.js"></script>
+		<script>
+			var H =$(document).height();
+			$(".list-info").find("ul").css("min-height",H)
+			var W = $(window).width();
+			$("html,body").width(W);
+			//省
+			function createPro(){
+				var prostr="";
+				for (var i=0;i<data.length;i++) {
+					prostr += "<li>"+data[i].region.name+"</li>"
+				}
+				$("#province").html(prostr)
+			}
+			//市
+			function createCity(n){
+				var citstr="";
+				for (var j=0;j<data[n].region.state.length;j++) {
+					if(data[n].region.state[j]){
+						citstr += "<li>"+data[n].region.state[j].name+"</li>"
+					}
+				}
+				$("#city").html(citstr)
+			}
+			//县
+			function createCon(n,m){
+				var constr="";
+				for (var k=0;k<=data[n].region.state[m].city.length;k++) {
+					if(data[n].region.state[m].city[k]){
+						constr += "<li>"+data[n].region.state[m].city[k].name+"</li>"
+					}
+				}
+				$("#county").html(constr)
+			}
+			var n=0;
+			var m=0;
+			$("#region").on("click",function(){
+				createPro();
+			})
+			$("#province").on("click","li",function(){
+				n = $(this).index();
+				createCity(n);
+			})
+			$("#city").on("click","li",function(){
+				m = $(this).index();
+				createCon(n,m);
+			})
+			$(".list-info .title").on("click",function(){
+				$(".list-info .title").hide();
+				$(this).show();
+				$(".list-info").find("ul").css("z-index","1")
+				$(".list-info").find(".frist").css("left","100%")
+				$(this).next().css("left","15%");
+				$(this).next().css("z-index","5");
+				$("html,body").animate({scrollTop:0},16)
+			})
+			$(".list-info ul").on("click","li",function(){
+				if($(this).parent().hasClass("frist")){
+					$(this).parents(".list-info").find("span").html("")
+					$(this).parents(".list-info").find("span").eq(0).html($(this).text())
+				}
+				if($(this).parent().hasClass("second")){
+					$(this).parents(".list-info").find("span").eq(1).html($(this).text())
+				}
+				if($(this).parent().hasClass("third")){
+					$(this).parents(".list-info").find("span").eq(2).html($(this).text())
+				}
+				$(this).parent().css("left","100%")
+				$(this).parent().next().css("left","15%")
+				if($(this).parent().next().length===0){
+					$(".list-info").find(".title").show();
+				}
+			})
+			// 	上传照片部分
+			var inputs = $(".pric-list input");
+			inputs.on("change",function(){
+				console.log($(this))
+				$(this).prev().attr("src", $(this).val())
+			})
+//			var MyScroll = new IScroll("ul",{
+//				scrollY: true,
+//				interactiveScrollbars:true,
+//			})
+		</script>
+		<script>
+			window.URL = window.URL || window.webkitURL;
+		    var fileElem = document.getElementById("fileElem"),
+		    fileList = document.getElementById("fileList");
+		    function handleFiles(obj) {
+		        var files = obj.files,
+		        img = new Image();
+		        if(window.URL){
+		            //File API
+		            //alert(files[0].name + "," + files[0].size + " bytes");
+		            img.src = window.URL.createObjectURL(files[0]); //创建一个object URL，并不是你的本地路径
+		            //img.width = 200;
+		            img.onload = function(e) {
+		                window.URL.revokeObjectURL(this.src); //图片加载后，释放object URL
+		            }
+		            fileList.appendChild(img);
+		        }else if(window.FileReader){
+		            //opera不支持createObjectURL/revokeObjectURL方法。我们用FileReader对象来处理
+		            var reader = new FileReader();
+		            reader.readAsDataURL(files[0]);
+		            reader.onload = function(e){
+		                //alert(files[0].name + "," +e.total + " bytes");
+		                img.src = this.result;
+		                //img.width = 200;
+		                fileList.appendChild(img);
+		            }
+		        }else{
+		            //ie
+		            obj.select();
+		            obj.blur();
+		            var nfile = document.selection.createRange().text;
+		            document.selection.empty();
+		            img.src = nfile;
+		            //img.width = 200;
+		            img.onload=function(){
+		                //alert(nfile+","+img.fileSize + " bytes");
+		            }
+		            fileList.appendChild(img);
+		        }
+		    }
+		</script>
+	</body>
+</html>
+ 

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<style>
+		.time{
+			font:18px/32px "微软雅黑";
+		}
+		.time #LeftTime{
+			font:24px/24px "微软雅黑";
+			color: orangered;
+		}
+	</style>
+	<body>
+		<div class="content3">
+			<span class="time">距离急售结束还有<span id="LeftTime"></span></span>
+		</div>
+		<script>
+		var sh = null;
+		function FreshTime(T){
+			var endtime=new Date(time);//结束时间
+			var nowtime = new Date();//当前时间
+			var lefttime=parseInt((T-nowtime.getTime())/1000); 
+			var d=parseInt(lefttime/3600/24);
+			var h=parseInt((lefttime/3600)%24);
+			var hh=checkTime(h)
+			var m=parseInt((lefttime/60)%60);
+			var mm=checkTime(m)
+			var s=parseInt(lefttime%60);
+			var ss=checkTime(s)	
+			document.getElementById("LeftTime").innerHTML=d+"天"+hh+"小时"+mm+"分"+ss+"秒";
+			function checkTime(i){
+				if (i<10){
+				i="0" + i;
+			}
+			return i;
+		} 
+		if(lefttime<=0){
+			document.getElementById("LeftTime").innerHTML="急售已结束";
+			clearInterval(sh);
+			}
+		}
+		var starttime = new Date()
+		time = starttime.getTime()+86400000*2
+		FreshTime(time);
+		sh = setInterval(function(){
+			FreshTime(time);
+		},1000);
+		</script>
+	</body>
+</html>

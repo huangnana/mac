@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+	</head>
+	<body>
+	</body>
+	 <script>
+    $(window).on("touchmove",function () {
+        var scrollTop = $(this).scrollTop();              //滚动条距离顶部的高度
+        var scrollHeight = $(document).height();               //当前页面的总高度
+        var windowHeight = $(this).height();                   //当前可视的页面高度
+        if (scrollTop + windowHeight >= scrollHeight) {        //距离顶部+当前高度 >=文档总高度 即代表滑动到底部
+            $("#pagestatus").css("display", "block")
+            // 拿第二页数据加载页面 
+               
+
+            //加载完成后
+            //$("#pagestatus").css("display", "none")
+        } else if (scrollTop <= 0) {         //滚动条距离顶部的高度小于等于0
+            $(".carnum").html("努力刷新.....");
+            $(window).on("touchend", function () {
+                window.location.reload(); // 或者重新拿一遍数据渲染页面
+                window.onload = function () {
+                    $(".carnum").html("为您找到<span class='orange'>@ViewBag.totalCount</span> 条车源");
+                }
+            })
+        }
+    })
+</script>
+</html>
